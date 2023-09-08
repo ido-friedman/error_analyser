@@ -1,0 +1,96 @@
+The Welch's t-test and the Mann-Whitney U test are both statistical tests that help us analyze differences between two groups or datasets.
+They are commonly used when we want to compare the means or distributions of two sets of data.
+
+Welch's t-test:
+
+    Use Case:
+
+        The Welch's t-test is used when the assumption of equal variances between the two groups cannot be met,
+        which is quite common in real-world scenarios.
+
+    Pros:
+
+        Takes into account sample size and variance differences between groups.
+
+        Provides more accurate results when variances are unequal. (This is mostly the case)
+
+    Cons:
+
+        Assumes that the data follows a normal distribution.
+
+Mann-Whitney U Test:
+
+    Use Case:
+
+        "The Mann-Whitney U test is a non-parametric test used when the assumption of normality is not met
+        or when dealing with ordinal or non-continuous data."
+
+        It means that it doesn't assume a lot of stuff the other tests assume, so it is much more flexible but also less
+        powerfull
+
+    Pros:
+
+        Doesn't assume that the data follows a normal distribution.
+
+    Cons:
+
+        Less sensitive than the t-test when the data does follow normal distribution
+
+
+Examples:
+
+Scenario 1: Normal Distribution
+
+    For the scenario where both datasets follow a normal distribution:
+
+        from t_test_strategy import TTestStrategy
+        from mann_whitney_u_strategy import MannWhitneyUStrategy
+        import numpy as np
+
+        # Example datasets
+        good_data_control = [np.random.normal(0.7, 0.05) for _ in range(50)]
+        bad_data_with_normal_distribution = [np.random.normal(0.75, 0.1) for _ in range(50)]
+
+        # Instantiate statistical test strategies
+        t_test = TTestStrategy()
+        mannwhitneyu_test = MannWhitneyUStrategy()
+
+        # Calculate p-values using the t-test strategy
+        p_value_t_test_normal_dist = t_test.calculate_probability(good_data_control, bad_data_with_normal_distribution)
+
+        # Calculate p-values using the Mann-Whitney U Test strategy
+        p_value_mannwhitneyu_normal_dist = mannwhitneyu_test.calculate_probability(good_data_control,  bad_data_with_normal_distribution)
+
+        print("Normal Distribution - T-Test p-value:", p_value_t_test_normal_dist)
+        print("Normal Distribution - Mann-Whitney U Test p-value:", p_value_mannwhitneyu_normal_dist)
+
+    Welch's t-test is appropriate here because it considers potential differences in variances.
+    Mann-Whitney U test is also valid, but since the data follows a normal distribution, Welch's t-test might be more powerful.
+
+Scenario 2: Repetitive Values
+
+    For the scenario where one dataset has repetitive values, the distribution might not be normal.
+
+        from t_test_strategy import TTestStrategy
+        from mann_whitney_u_strategy import MannWhitneyUStrategy
+        import numpy as np
+
+        # Example datasets
+        good_data_control = [np.random.normal(0.7, 0.05) for _ in range(50)]
+        bad_data_with_repetitive_values = [0.9, 0.91, 0.02, 0.92] * 15
+
+        # Instantiate statistical test strategies
+        t_test = TTestStrategy()
+        mannwhitneyu_test = MannWhitneyUStrategy()
+
+        # Calculate p-values using the t-test strategy
+        p_value_t_test_repetitive_values = t_test.calculate_probability(good_data_control, bad_data_with_repetitive_values)
+
+        # Calculate p-values using the Mann-Whitney U Test strategy
+        p_value_mannwhitneyu_repetitive_values = mannwhitneyu_test.calculate_probability(good_data_control, bad_data_with_repetitive_values)
+
+        print("Repetitive values - T-Test p-value:", p_value_t_test_repetitive_values)
+        print("Repetitive values - Mann-Whitney U Test p-value:", p_value_mannwhitneyu_repetitive_values)
+
+    Mann-Whitney U test is more suitable here due to its robustness against non-normal distributions.
+    Welch's t-test could be used, but it might not perform well with non-normal data.

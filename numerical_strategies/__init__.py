@@ -1,0 +1,3 @@
+from numerical_strategies.mann_whitney_u_strategy import MannWhitneyUStrategy
+from numerical_strategies.numerical_strategy import NumericalStrategy
+from numerical_strategies.t_test_strategy import TTestStrategy
